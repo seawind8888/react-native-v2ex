@@ -30,6 +30,7 @@ class SideMenuList extends Component {
         this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
         this.state = {
             isOpen: false,
+            rightIsOpen: false,
             selectedItem: 'Collection'
         }
     }
@@ -43,9 +44,15 @@ class SideMenuList extends Component {
 
     }
 
-    toggle() {
+    toggleLeft() {
         this.setState({
             isOpen: !this.state.isOpen,
+        });
+    }
+
+    toggleRight() {
+        this.setState({
+            rightIsOpen: !this.state.rightIsOpen,
         });
     }
 
@@ -62,6 +69,7 @@ class SideMenuList extends Component {
 
     render() {
         const {Latest} = this.props;
+        console.log(this.state.rightIsOpen);
         const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
         return (
             <View style={{flex: 1}}>
@@ -73,13 +81,13 @@ class SideMenuList extends Component {
                         onChange={(isOpen) => this.updateMenuState(isOpen)}>
                         <View>
                             <View style={styles.listHeader}>
-                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggle()}>
+                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleLeft()}>
                                     <Image source={require('../imgs/slideButton.png')} style={styles.slideButtonImg}/>
                                 </TouchableOpacity>
                                 <View style={styles.titleContainer}>
                                     <Text style={styles.tabTitle}>技术</Text>
                                 </View>
-                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggle()}>
+                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleRight()}>
                                     <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
                                 </TouchableOpacity>
                             </View>
