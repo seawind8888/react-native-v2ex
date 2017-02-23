@@ -9,49 +9,48 @@ import{
     Image,
     Dimensions,
     ScrollView,
+    RefreshControl,
     InteractionManager,
     StyleSheet,
-    ListView
+    ListView,
+    Animated
 } from 'react-native';
 import WebViewContainer from '../components/WebViewContainer';
-import SideMenu from 'react-native-side-menu';
-import Menu from '../view/Menu';
+
+import {fetchLatest} from '../action';
+
+
 
 var {height, width} = Dimensions.get('window');
+var positionRight = -width;
 
 
-class LatestList extends Component {
+class InfoListView extends Component {
     constructor(props) {
         super(props);
-        const {Latest, route} = this.props;
+        const {rightIsOpen} = this.props;
         this.onPressItem = this.onPressItem.bind(this);
         this.renderItem = this.renderItem.bind(this);
+        this.onScrollDown = this.onScrollDown.bind(this);
+
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            list: Latest.data,
-            isOpen: route.rightIsOpen
+            isOpen: rightIsOpen,
+            selectedItem: 'Collection',
+            digAnim: new Animated.Value(0), // init opacity 0
+            fadeAnim: new Animated.Value(0), // init opacity 0
         }
     }
 
-    updateMenuState(isOpen) {
-        this.setState({isOpen,});
-    }
-
-    onMenuItemSelected = (item) => {
-        this.setState({
-            isOpen: false,
-            selectedItem: item,
-        });
-    }
-
-    onPressItem(item) {
+    onPressItem(listContent) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: WebViewContainer,
-                name: 'WebViewContainer'
+                name: 'WebViewContainer',
+                listContent
             });
         });
     }
@@ -69,12 +68,12 @@ class LatestList extends Component {
         );
     }
 
-    renderItem(listContent, rowID) {
+    renderItem(listContent) {
         let postTime = Math.floor((Date.parse(new Date()) / 1000 - listContent.last_modified) / 60);
         return (
             <View>
                 <TouchableWithoutFeedback onPress={()=> {
-                    this.onPressItem(rowID)
+                    this.onPressItem(listContent)
                 }}>
                     <View style={styles.listItemContainer}>
                         <View style={styles.listItemHeader}>
@@ -97,21 +96,40 @@ class LatestList extends Component {
         );
     }
 
+    onScrollDown() {
+        const {dispatch} = this.props;
+        dispatch(fetchLatest())
+    }
+
+
+
     render() {
-        const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
+        const {Latest,rightIsOpen} = this.props;
+
         return (
             <View style={styles.container}>
-                <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-                    {this.renderContent(this.state.dataSource.cloneWithRows(this.state.list))}
+                <ScrollView
+                    style={styles.listContainer}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={Latest.isLoading}
+                            onRefresh={() => this.onScrollDown() }
+                            title="正在加载中……"
+                            color="#ccc"/>
+                    }>
+                    {Latest.isLoading ? <View></View> :
+                        <View style={{flex:1}}>{this.renderContent(this.state.dataSource.cloneWithRows(Latest.data))}</View>
+                    }
                 </ScrollView>
+
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
     container: {
-        width: width,
-        height: height
+        flex: 1,
+        backgroundColor: '#ffffff'
     },
     listContainer: {
         flex: 1,
@@ -121,7 +139,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#ffffff',
         borderColor: '#dddddd',
-        borderTopWidth: .5,
         borderBottomWidth: .5
     },
     listItemHeader: {
@@ -165,4 +182,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LatestList;
+export default InfoListView;

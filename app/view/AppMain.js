@@ -10,16 +10,18 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     InteractionManager,
     DrawerLayoutAndroid,
-    Platform
+    Platform,
+    Animated
 } from 'react-native';
-import SideMenu from 'react-native-side-menu'
-import LatestList from '../view/LatestList';
-import Menu from '../view/Menu';
-import * as Progress from 'react-native-progress';
+
+import InfoListView from './InfoListView';
 import {connect} from 'react-redux';
 import {fetchLatest} from '../action';
+import SideMenu from 'react-native-side-menu'
+import Menu from '../view/Menu';
 
 
 var {height, width} = Dimensions.get('window');
@@ -30,8 +32,10 @@ class AppMain extends Component {
         this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
         this.state = {
             isOpen: false,
+            maskShow: false,
             rightIsOpen: false,
-            selectedItem: 'Collection'
+            selectedItem: 'Collection',
+            fadeAnim: new Animated.Value(0) // init opacity 0
         }
     }
 
@@ -45,11 +49,26 @@ class AppMain extends Component {
     }
 
     toggleLeft() {
+
+        if(this.state.isOpen == false){
+            this.setState({
+                maskShow: true,
+            });
+
+        }else{
+            setTimeout(()=>{
+                this.setState({
+                    maskShow: false,
+                });
+            },500)
+        }
+
         this.setState({
             isOpen: !this.state.isOpen,
         });
-    }
 
+
+    }
     toggleRight() {
         this.setState({
             rightIsOpen: !this.state.rightIsOpen,
@@ -57,7 +76,22 @@ class AppMain extends Component {
     }
 
     updateMenuState(isOpen) {
-        this.setState({isOpen,});
+        this.setState({isOpen});
+        if (isOpen == 1) {
+            Animated.timing(
+                this.state.fadeAnim, {
+                    toValue: .6,
+                    duration: 500
+                },
+            ).start();
+        } else {
+            Animated.timing(
+                this.state.fadeAnim, {
+                    toValue: 0,
+                    duration: 500
+                },
+            ).start();
+        }
     }
 
     onMenuItemSelected = (item) => {
@@ -67,34 +101,45 @@ class AppMain extends Component {
         });
     }
 
+
+
     render() {
-        const {Latest} = this.props;
-        console.log(this.state.rightIsOpen);
         const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
         return (
             <View style={{flex: 1}}>
-                {Latest.isLoading ? <View style={styles.waitingBlock}>
-                    <Progress.Circle size={40} indeterminate={true}/></View> :
-                    <SideMenu
-                        menu={menu}
-                        isOpen={this.state.isOpen}
-                        onChange={(isOpen) => this.updateMenuState(isOpen)}>
-                        <View>
-                            <View style={styles.listHeader}>
-                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleLeft()}>
-                                    <Image source={require('../imgs/slideButton.png')} style={styles.slideButtonImg}/>
-                                </TouchableOpacity>
-                                <View style={styles.titleContainer}>
-                                    <Text style={styles.tabTitle}>技术</Text>
-                                </View>
-                                <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleRight()}>
-                                    <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
-                                </TouchableOpacity>
-                            </View>
-                            <LatestList {...this.props}/>
+                <SideMenu
+                    menu={menu}
+                    openMenuOffset={250}
+                    menuPosition="left"
+                    isOpen={this.state.isOpen}
+                    onChange={(isOpen) => this.updateMenuState(isOpen)}>
+                    {this.state.maskShow?
+                        <TouchableWithoutFeedback onPress={() => this.toggleLeft()}>
+                            <Animated.View
+                                style={{
+                                    opacity: this.state.fadeAnim,
+                                    width: width,
+                                    height: height,
+                                    backgroundColor: '#333',
+                                    position: 'absolute',
+                                    zIndex: 200
+                                }}>
+                            </Animated.View>
+                        </TouchableWithoutFeedback> : <View/>
+                    }
+                    <View style={styles.listHeader}>
+                        <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleLeft()}>
+                            <Image source={require('../imgs/slideButton.png')} style={styles.slideButtonImg}/>
+                        </TouchableOpacity>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.tabTitle}>技术</Text>
                         </View>
-                    </SideMenu>
-                }
+                        <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleRight()}>
+                            <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
+                        </TouchableOpacity>
+                    </View>
+                    <InfoListView rightIsOpen={this.state.rightIsOpen} {...this.props}/>
+                </SideMenu>
             </View>
         )
     }
@@ -109,6 +154,8 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         backgroundColor: '#ffffff',
         flexDirection: 'row',
+        borderColor: '#dddddd',
+        borderBottomWidth: .5
     },
     titleContainer: {
         flex: 1,

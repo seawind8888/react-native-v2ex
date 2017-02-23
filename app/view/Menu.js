@@ -57,11 +57,13 @@ class Menu extends Component {
 }
 const styles = StyleSheet.create({
     menu: {
-        flex: 1,
-        width: width,
-        height: height,
+        height:height,
+        width:width,
+        flex:1,
         padding:20,
-        backgroundColor: '#e3e3e3'
+        backgroundColor: '#e3e3e3',
+        position:'relative',
+        zIndex:300
     },
     avatarContainer: {
         marginBottom: 20,

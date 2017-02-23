@@ -13,6 +13,8 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
+import Util from '../common/utils';
+
 let {height, width} = Dimensions.get('window');
 
 class WebViewContainer extends Component {
@@ -23,23 +25,32 @@ class WebViewContainer extends Component {
         }
     }
 
-    componentWillMount() {
+    buttonBackAction() {
+        const {navigator} = this.props;
+        return Util.NaviGoBack(navigator);
     }
 
     render() {
-        const {news} = this.props;
-        console.log(news);
+        const {route} = this.props;
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableWithoutFeedback onPress={() => {
-                    }}>
-                        <Image style={styles.back_arrow}></Image>
-                    </TouchableWithoutFeedback>
+            <View style={{flex:1}}>
+                <View style={styles.listHeader}>
+                    <View style={styles.backButtonContainer}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.buttonBackAction()
+                        }}>
+                            <Image style={styles.backButton} source={require('../imgs/back.png')}></Image>
+                        </TouchableWithoutFeedback>
+                    </View>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.tabTitle}>技术</Text>
+                    </View>
+                    <View style={styles.backButtonContainer}>
+                    </View>
                 </View>
                 <WebView
                     style={{flex:1}}
-                    source={{uri: news.post_source}}
+                    source={{uri: route.listContent.url}}
                 >
                 </WebView>
             </View>
@@ -47,21 +58,35 @@ class WebViewContainer extends Component {
     }
 }
 const styles = StyleSheet.create({
-    header: {
+    listHeader: {
         width: width,
-        height: 60,
-        paddingTop: 20,
+        height: 65,
+        paddingTop: 35,
         paddingLeft: 10,
-        backgroundColor: '#e3e3e3',
-        justifyContent: 'center'
+        paddingRight: 10,
+        backgroundColor: '#ffffff',
+        flexDirection: 'row',
+        position:'relative',
+        borderBottomWidth:.5,
+        borderColor:'#dddddd'
     },
-    back_arrow: {
+    titleContainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    tabTitle: {
+        fontSize: 18
+    },
+    backButtonContainer: {
         width: 20,
-        height: 20
+        height:20,
+        padding: 2
     },
-    container: {
-        flex:1
-    }
+    backButton: {
+        width: 14,
+        height: 14
+    },
+
 });
 
 export default WebViewContainer
