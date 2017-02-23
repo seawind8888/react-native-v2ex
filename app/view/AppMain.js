@@ -24,7 +24,7 @@ import {fetchLatest} from '../action';
 
 var {height, width} = Dimensions.get('window');
 
-class SideMenuList extends Component {
+class AppMain extends Component {
     constructor(props) {
         super(props);
         this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
@@ -139,7 +139,7 @@ export default connect((state) => {
     return {
         Latest
     }
-})(SideMenuList);
+})(AppMain);
 
 
 

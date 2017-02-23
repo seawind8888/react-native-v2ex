@@ -8,11 +8,11 @@ import {
     Navigator,
     View
 } from 'react-native';
-import App from './view/HomePage';
+import App from './view/App';
 import { Provider } from 'react-redux';
 import store from './store/configureStore';
 
-export default class rootApp extends Component {
+export default class root extends Component {
     render() {
         return (
             <Provider store={store}>

@@ -8,7 +8,7 @@ import {
     Navigator,
     View
 } from 'react-native';
-import SideMenuList from './SideMenuList'
+import AppMain from './AppMain'
 
 class App extends Component {
     constructor(props) {
@@ -35,8 +35,8 @@ class App extends Component {
                     configureScene={this._configureScene}
                     renderScene={this._renderScene}
                     initialRoute={{
-                        component: SideMenuList,
-                        name: 'SideMenuList'
+                        component: AppMain,
+                        name: 'AppMain'
                     }}
                 />
             </View>

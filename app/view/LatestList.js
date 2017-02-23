@@ -101,16 +101,9 @@ class LatestList extends Component {
         const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
         return (
             <View style={styles.container}>
-                <SideMenu
-                    menu={menu}
-                    isOpen={this.state.isOpen}
-                    openMenuOffset={50}
-                    menuPosition='right'
-                    onChange={(isOpen) => this.updateMenuState(isOpen)}>
-                    <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-                        {this.renderContent(this.state.dataSource.cloneWithRows(this.state.list))}
-                    </ScrollView>
-                </SideMenu>
+                <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
+                    {this.renderContent(this.state.dataSource.cloneWithRows(this.state.list))}
+                </ScrollView>
             </View>
         );
     }
