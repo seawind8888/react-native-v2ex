@@ -2,23 +2,20 @@
  * Created by haifeng on 17/1/13.
  */
 import * as types from '../action/actionTypes';
-import React, {
-    ListView
-} from 'react-native'
 
 const initialState = {
     data:{},
     isLoading:true,
 };
 
-let latestReducer = (state = initialState, action) => {
+let listInfoReducer = (state = initialState, action) => {
     switch (action.type) {
-        case types.FETCH_LATEST_INIT:
+        case types.FETCH_LIST_INIT:
             return {
                 ...state,
                 isLoading: true
             };
-        case types.FETCH_LATEST_LIST:
+        case types.FETCH_LIST_INFO:
             return {
                 ...state,
                 isLoading: false,
@@ -29,4 +26,4 @@ let latestReducer = (state = initialState, action) => {
     }
 }
 
-export default latestReducer;
+export default listInfoReducer;

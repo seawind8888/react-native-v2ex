@@ -17,32 +17,58 @@ import{
 } from 'react-native';
 import WebViewContainer from '../components/WebViewContainer';
 
-import {fetchLatest} from '../action';
-
+import {fetchList} from '../action/fetchListAction';
+import {rightSliderOpen} from '../action/righSliderAction';
 
 
 var {height, width} = Dimensions.get('window');
-var positionRight = -width;
 
 
 class InfoListView extends Component {
+
     constructor(props) {
         super(props);
-        const {rightIsOpen} = this.props;
         this.onPressItem = this.onPressItem.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.onScrollDown = this.onScrollDown.bind(this);
-
+        this.fetchInfoTransition = this.fetchInfoTransition.bind(this);
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            isOpen: rightIsOpen,
             selectedItem: 'Collection',
-            digAnim: new Animated.Value(0), // init opacity 0
-            fadeAnim: new Animated.Value(0), // init opacity 0
+            digAnim: new Animated.Value(0)
         }
     }
+
+    componentDidMount() {
+
+    }
+
+    componentWillUpdate(nextProps, nextState){
+
+    }
+
+    componentDidUpdate(nextProps, nextState){
+        const {RightSlider} = this.props;
+        if(RightSlider.isOpen == 1){
+            Animated.timing(
+                this.state.digAnim, {
+                    toValue: 130,
+                    duration: 200
+                },
+            ).start();
+        }else{
+            Animated.timing(
+                this.state.digAnim, {
+                    toValue: 0,
+                    duration: 200
+                },
+            ).start();
+        }
+    }
+
+
 
     onPressItem(listContent) {
         const {navigator} = this.props;
@@ -98,27 +124,60 @@ class InfoListView extends Component {
 
     onScrollDown() {
         const {dispatch} = this.props;
-        dispatch(fetchLatest())
+        dispatch(fetchList())
+    }
+
+    fetchInfoTransition(channel) {
+        const {dispatch} = this.props;
+        Animated.timing(
+            this.state.digAnim, {
+                toValue: 0,
+                duration: 200
+            },
+        ).start();
+        setTimeout(()=>{
+            dispatch(fetchList(channel));
+            dispatch(rightSliderOpen(false));
+        },200)
     }
 
 
-
     render() {
-        const {Latest,rightIsOpen} = this.props;
-
+        const {ListInfo} = this.props;
         return (
             <View style={styles.container}>
                 <ScrollView
                     style={styles.listContainer}
                     refreshControl={
                         <RefreshControl
-                            refreshing={Latest.isLoading}
+                            refreshing={ListInfo.isLoading}
                             onRefresh={() => this.onScrollDown() }
                             title="正在加载中……"
                             color="#ccc"/>
                     }>
-                    {Latest.isLoading ? <View></View> :
-                        <View style={{flex:1}}>{this.renderContent(this.state.dataSource.cloneWithRows(Latest.data))}</View>
+                    {ListInfo.isLoading ? <View></View> :
+                        <View style={{flex: 1, position: 'relative'}}>
+                            <Animated.View
+                                style={{
+                                    position:'relative',
+                                    right:this.state.digAnim,
+                                    zIndex:100
+                                }}>
+                                {this.renderContent(this.state.dataSource.cloneWithRows(ListInfo.data))}
+                            </Animated.View>
+                            <View style={styles.rightSliderContainer}>
+                                <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition() }}>
+                                    <View style={styles.rightSliderOptionsContainer}>
+                                        <Text style={styles.rightSliderOptions}>最新</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={()=>{  this.fetchInfoTransition('hot')}}>
+                                    <View style={styles.rightSliderOptionsContainer}>
+                                        <Text style={styles.rightSliderOptions}>最热</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                        </View>
                     }
                 </ScrollView>
 
@@ -179,6 +238,26 @@ const styles = StyleSheet.create({
         color: '#75787c',
         backgroundColor: '#f9f9f9',
         fontSize: 13
+    },
+    rightSliderContainer: {
+        width: 130,
+        height: height,
+        position: 'absolute',
+        right: 0,
+        backgroundColor: '#fafafa',
+        borderLeftWidth:1,
+        borderColor:'#efefef',
+        paddingTop:10,
+        paddingLeft:18,
+        flexWrap:'wrap'
+    },
+    rightSliderOptionsContainer:{
+        height:36,
+        justifyContent:'center'
+    },
+    rightSliderOptions:{
+        color:'#8d8d8d',
+        fontSize:18
     }
 });
 

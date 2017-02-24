@@ -19,12 +19,14 @@ import {
 
 import InfoListView from './InfoListView';
 import {connect} from 'react-redux';
-import {fetchLatest} from '../action';
+import {fetchList} from '../action/fetchListAction';
+import {rightSliderOpen} from '../action/righSliderAction';
 import SideMenu from 'react-native-side-menu'
 import Menu from '../view/Menu';
 
 
 var {height, width} = Dimensions.get('window');
+
 
 class AppMain extends Component {
     constructor(props) {
@@ -35,13 +37,13 @@ class AppMain extends Component {
             maskShow: false,
             rightIsOpen: false,
             selectedItem: 'Collection',
-            fadeAnim: new Animated.Value(0) // init opacity 0
+            fadeAnim: new Animated.Value(0)
         }
     }
 
     componentWillMount() {
         const {dispatch} = this.props;
-        dispatch(fetchLatest());
+        dispatch(fetchList());
     }
 
     componentDidMount() {
@@ -49,7 +51,6 @@ class AppMain extends Component {
     }
 
     toggleLeft() {
-
         if(this.state.isOpen == false){
             this.setState({
                 maskShow: true,
@@ -70,9 +71,11 @@ class AppMain extends Component {
 
     }
     toggleRight() {
-        this.setState({
-            rightIsOpen: !this.state.rightIsOpen,
-        });
+        const {dispatch} = this.props;
+        dispatch(rightSliderOpen());
+        // this.setState({
+        //     rightIsOpen: !this.state.rightIsOpen,
+        // });
     }
 
     updateMenuState(isOpen) {
@@ -104,6 +107,7 @@ class AppMain extends Component {
 
 
     render() {
+
         const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
         return (
             <View style={{flex: 1}}>
@@ -181,10 +185,10 @@ const styles = StyleSheet.create({
 });
 
 export default connect((state) => {
-    const {Latest} = state;
-    console.log(state);
+    const {ListInfo,RightSlider} = state;
     return {
-        Latest
+        ListInfo,
+        RightSlider
     }
 })(AppMain);
 
