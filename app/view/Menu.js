@@ -13,9 +13,10 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
-var {height,width} = Dimensions.get('window');
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-const uri = 'https://pickaface.net/gallery/avatar/Opi51c74d0125fd4.png';
+var {height,width} = Dimensions.get('window');
 
 class Menu extends Component {
     constructor(props) {
@@ -28,29 +29,66 @@ class Menu extends Component {
     render() {
         return (
             <ScrollView scrollsToTop={false} style={styles.menu}>
-                <View style={styles.avatarContainer}>
+                <View style={styles.leftSliderHeader}>
                     <TouchableWithoutFeedback>
+                        <View style={styles.avatarContainer}>
                         <Image
                             style={styles.avatar}
-                            source={{ uri, }}/>
+                            source={require('../imgs/user.png')}/>
+                        </View>
                     </TouchableWithoutFeedback>
-                    <Text style={styles.name}>Your name</Text>
                 </View>
-                <Text
-                    onPress={() => this.props.onItemSelected('Collection')}
-                    style={styles.item}>
-                    收藏过的
-                </Text>
-                <Text
-                    onPress={() => this.props.onItemSelected('Favorite')}
-                    style={styles.item}>
-                    点过赞的
-                </Text>
-                <Text
-                    onPress={() => this.props.onItemSelected('Sitting')}
-                    style={styles.item}>
-                    设置
-                </Text>
+                <View style={styles.leftSliderMain}>
+                    <View style={styles.leftSliderItem}>
+                        <Icon name="md-time" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Collection')}
+                            style={styles.leftItemText}>
+                            最新
+                        </Text>
+                    </View>
+                    <View style={styles.leftSliderItem}>
+                        <Icon name="md-book" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Favorite')}
+                            style={styles.leftItemText}>
+                            分类
+                        </Text>
+                    </View>
+                    <View style={styles.leftSliderItem}>
+                        <Icon name="md-share" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Sitting')}
+                            style={styles.leftItemText}>
+                            节点
+                        </Text>
+                    </View>
+                    <View style={styles.leftSliderItem}>
+                        <Icon name="md-star-outline" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Sitting')}
+                            style={styles.leftItemText}>
+                            收藏
+                        </Text>
+                    </View>
+                    <View style={styles.leftSliderItem}>
+                        <FontAwesome name="bell-o" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Sitting')}
+                            style={styles.leftItemText}>
+                            提醒
+                        </Text>
+                    </View>
+                    <View style={styles.leftSliderItem}>
+                        <FontAwesome name="user-o" size={20} color="#737373"/>
+                        <Text
+                            onPress={() => this.props.onItemSelected('Sitting')}
+                            style={styles.leftItemText}>
+                            个人
+                        </Text>
+                    </View>
+                </View>
+
             </ScrollView>
         )
     }
@@ -60,30 +98,49 @@ const styles = StyleSheet.create({
         height:height,
         width:width,
         flex:1,
-        padding:20,
-        backgroundColor: '#e3e3e3',
+        backgroundColor: '#fafafa',
         position:'relative',
         zIndex:300
     },
+    leftSliderHeader:{
+        paddingTop:30,
+        paddingBottom:20,
+        paddingLeft:30,
+        borderBottomWidth:.5,
+        borderColor:'#dddddd'
+    },
     avatarContainer: {
-        marginBottom: 20,
-        marginTop: 20,
+        padding:10,
+        width:68,
+        borderWidth:1,
+        borderColor:'#757575',
+        borderRadius:5,
     },
     avatar: {
         width: 48,
-        height: 48,
-        borderRadius: 24,
-        flex: 1,
+        height: 48
+    },
+    leftSliderMain: {
+        padding:10
+    },
+    leftSliderItem: {
+        height:60,
+        paddingLeft:20,
+        flexDirection:'row',
+        alignItems:'center'
     },
     name: {
         position: 'absolute',
         left: 70,
         top: 20,
     },
-    item: {
-        fontSize: 14,
-        fontWeight: '300',
-        paddingTop: 5,
+    leftItemText: {
+        fontSize: 16,
+        marginLeft:30,
+        color:'#727272',
+        fontWeight: 'bold',
+        paddingBottom:3,
+        flex:1
     },
 });
 export default Menu
