@@ -18,7 +18,6 @@ import{
 import WebViewContainer from '../components/WebViewContainer';
 
 import {fetchList} from '../action/fetchListAction';
-import {rightSliderOpen} from '../action/righSliderAction';
 
 
 var {height, width} = Dimensions.get('window');
@@ -66,12 +65,6 @@ class InfoListView extends Component {
         }
     }
 
-    componentDidUpdate(nextProps, nextState){
-        const {RightSlider} = this.props;
-        console.log(nextProps.rightIsOpen);
-    }
-
-
 
     onPressItem(listContent) {
         const {navigator} = this.props;
@@ -84,9 +77,9 @@ class InfoListView extends Component {
         });
     }
 
-    onScrollDown() {
+    onScrollDown(channel) {
         const {dispatch} = this.props;
-        dispatch(fetchList('latest'))
+        dispatch(fetchList(channel))
     }
 
     fetchInfoTransition(channel) {
@@ -99,8 +92,7 @@ class InfoListView extends Component {
             },
         ).start();
         setTimeout(()=>{
-            dispatch(fetchList(channel));
-            dispatch(rightSliderOpen(false));
+            this.onScrollDown(channel);
         },200)
     }
 
@@ -157,7 +149,7 @@ class InfoListView extends Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={ListInfo.isLoading}
-                            onRefresh={() => this.onScrollDown() }
+                            onRefresh={() => this.onScrollDown(ListInfo.channel) }
                             title="正在加载中……"
                             color="#ccc"/>
                     }>

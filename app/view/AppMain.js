@@ -20,7 +20,6 @@ import {
 import InfoListView from './InfoListView';
 import {connect} from 'react-redux';
 import {fetchList} from '../action/fetchListAction';
-import {rightSliderOpen} from '../action/righSliderAction';
 import SideMenu from 'react-native-side-menu'
 import Menu from '../view/Menu';
 
@@ -47,10 +46,6 @@ class AppMain extends Component {
         dispatch(fetchList('latest'));
     }
 
-    componentDidMount() {
-
-    }
-
     toggleLeft() {
         if(this.state.isOpen == false){
             this.setState({
@@ -72,12 +67,9 @@ class AppMain extends Component {
 
     }
     toggleRight() {
-        // const {dispatch} = this.props;
-        // dispatch(rightSliderOpen());
         this.setState({
             rightIsOpen: !this.state.rightIsOpen,
         });
-        console.log(this.state.rightIsOpen)
     }
 
     updateMenuState(isOpen) {
