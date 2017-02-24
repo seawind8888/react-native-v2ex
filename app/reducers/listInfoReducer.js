@@ -6,6 +6,7 @@ import * as types from '../action/actionTypes';
 const initialState = {
     data:{},
     isLoading:true,
+    channel:''
 };
 
 let listInfoReducer = (state = initialState, action) => {
@@ -19,7 +20,8 @@ let listInfoReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                data: action.response
+                data: action.response,
+                channel:action.channel
             };
         default:
             return state

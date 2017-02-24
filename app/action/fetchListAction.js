@@ -6,7 +6,7 @@ import * as types from './actionTypes'
 
 export function fetchList(channel) {
     var URL;
-    if (!channel) {
+    if (channel == 'latest') {
         URL = 'https://www.v2ex.com/api/topics/latest.json';
     } else if (channel == 'hot') {
         URL = 'https://www.v2ex.com/api/topics/hot.json';
@@ -19,10 +19,10 @@ export function fetchList(channel) {
         dispatch(fetchListInit());
 
         Util.fetchData(URL, 'get', '', (response) => {
-            dispatch(fetchListInfo(response));
+            dispatch(fetchListInfo(response,channel));
         }, (error) => {
             alert(error);
-            dispatch(fetchListInfo(error))
+            dispatch(fetchListInfo(error,channel))
         })
     }
 }
@@ -34,10 +34,11 @@ let fetchListInit = (response) => {
     }
 };
 
-let fetchListInfo = (response) => {
+let fetchListInfo = (response,channel) => {
     return {
         type: types.FETCH_LIST_INFO,
-        response
+        response,
+        channel
     }
 };
 

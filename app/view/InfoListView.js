@@ -28,6 +28,7 @@ class InfoListView extends Component {
 
     constructor(props) {
         super(props);
+        const {rightIsOpen} = this.props;
         this.onPressItem = this.onPressItem.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.onScrollDown = this.onScrollDown.bind(this);
@@ -37,7 +38,9 @@ class InfoListView extends Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
             selectedItem: 'Collection',
-            digAnim: new Animated.Value(0)
+            digAnim: new Animated.Value(0),
+            rightIsOpen: rightIsOpen,
+            changeOpen: React.PropTypes.func.isRequired
         }
     }
 
@@ -46,12 +49,7 @@ class InfoListView extends Component {
     }
 
     componentWillUpdate(nextProps, nextState){
-
-    }
-
-    componentDidUpdate(nextProps, nextState){
-        const {RightSlider} = this.props;
-        if(RightSlider.isOpen == 1){
+        if(nextProps.rightIsOpen == 1){
             Animated.timing(
                 this.state.digAnim, {
                     toValue: 130,
@@ -68,6 +66,11 @@ class InfoListView extends Component {
         }
     }
 
+    componentDidUpdate(nextProps, nextState){
+        const {RightSlider} = this.props;
+        console.log(nextProps.rightIsOpen);
+    }
+
 
 
     onPressItem(listContent) {
@@ -80,6 +83,27 @@ class InfoListView extends Component {
             });
         });
     }
+
+    onScrollDown() {
+        const {dispatch} = this.props;
+        dispatch(fetchList('latest'))
+    }
+
+    fetchInfoTransition(channel) {
+        const {dispatch} = this.props;
+        this.props.changeOpen();
+        Animated.timing(
+            this.state.digAnim, {
+                toValue: 0,
+                duration: 200
+            },
+        ).start();
+        setTimeout(()=>{
+            dispatch(fetchList(channel));
+            dispatch(rightSliderOpen(false));
+        },200)
+    }
+
 
     renderContent(dataSource) {
         return (
@@ -122,24 +146,6 @@ class InfoListView extends Component {
         );
     }
 
-    onScrollDown() {
-        const {dispatch} = this.props;
-        dispatch(fetchList())
-    }
-
-    fetchInfoTransition(channel) {
-        const {dispatch} = this.props;
-        Animated.timing(
-            this.state.digAnim, {
-                toValue: 0,
-                duration: 200
-            },
-        ).start();
-        setTimeout(()=>{
-            dispatch(fetchList(channel));
-            dispatch(rightSliderOpen(false));
-        },200)
-    }
 
 
     render() {
@@ -166,14 +172,18 @@ class InfoListView extends Component {
                                 {this.renderContent(this.state.dataSource.cloneWithRows(ListInfo.data))}
                             </Animated.View>
                             <View style={styles.rightSliderContainer}>
-                                <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition() }}>
+                                <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition('latest') }}>
                                     <View style={styles.rightSliderOptionsContainer}>
-                                        <Text style={styles.rightSliderOptions}>最新</Text>
+                                        <Text style={
+                                            ListInfo.channel=='latest'?
+                                                styles.rightSliderOptionsOn:styles.rightSliderOptions}>最新</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={()=>{  this.fetchInfoTransition('hot')}}>
                                     <View style={styles.rightSliderOptionsContainer}>
-                                        <Text style={styles.rightSliderOptions}>最热</Text>
+                                        <Text style={
+                                            ListInfo.channel=='hot'?
+                                                styles.rightSliderOptionsOn:styles.rightSliderOptions}>最热</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
                             </View>
@@ -257,6 +267,10 @@ const styles = StyleSheet.create({
     },
     rightSliderOptions:{
         color:'#8d8d8d',
+        fontSize:18
+    },
+    rightSliderOptionsOn:{
+        color:'#55b8ec',
         fontSize:18
     }
 });

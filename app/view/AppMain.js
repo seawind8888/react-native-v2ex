@@ -32,18 +32,19 @@ class AppMain extends Component {
     constructor(props) {
         super(props);
         this.onMenuItemSelected = this.onMenuItemSelected.bind(this);
+        this.changeRightSlider = this.changeRightSlider.bind(this);
         this.state = {
             isOpen: false,
             maskShow: false,
             rightIsOpen: false,
-            selectedItem: 'Collection',
+            selectedItem: 'Latest',
             fadeAnim: new Animated.Value(0)
         }
     }
 
     componentWillMount() {
         const {dispatch} = this.props;
-        dispatch(fetchList());
+        dispatch(fetchList('latest'));
     }
 
     componentDidMount() {
@@ -71,11 +72,12 @@ class AppMain extends Component {
 
     }
     toggleRight() {
-        const {dispatch} = this.props;
-        dispatch(rightSliderOpen());
-        // this.setState({
-        //     rightIsOpen: !this.state.rightIsOpen,
-        // });
+        // const {dispatch} = this.props;
+        // dispatch(rightSliderOpen());
+        this.setState({
+            rightIsOpen: !this.state.rightIsOpen,
+        });
+        console.log(this.state.rightIsOpen)
     }
 
     updateMenuState(isOpen) {
@@ -96,13 +98,23 @@ class AppMain extends Component {
             ).start();
         }
     }
+    changeRightSlider = () => {
+        this.setState({
+           rightIsOpen:false
+        });
+    };
 
     onMenuItemSelected = (item) => {
         this.setState({
             isOpen: false,
             selectedItem: item,
         });
-    }
+        if(item == this.state.selectedItem){
+            return
+        }else{
+            alert('开发中')
+        }
+    };
 
 
 
@@ -142,7 +154,7 @@ class AppMain extends Component {
                             <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
                         </TouchableOpacity>
                     </View>
-                    <InfoListView rightIsOpen={this.state.rightIsOpen} {...this.props}/>
+                    <InfoListView changeOpen={ this.changeRightSlider} rightIsOpen={this.state.rightIsOpen} {...this.props}/>
                 </SideMenu>
             </View>
         )

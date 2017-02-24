@@ -42,7 +42,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <Icon name="md-time" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Collection')}
+                            onPress={() => this.props.onItemSelected('Latest')}
                             style={styles.leftItemText}>
                             最新
                         </Text>
@@ -50,7 +50,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <Icon name="md-book" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Favorite')}
+                            onPress={() => this.props.onItemSelected('Class')}
                             style={styles.leftItemText}>
                             分类
                         </Text>
@@ -58,7 +58,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <Icon name="md-share" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Sitting')}
+                            onPress={() => this.props.onItemSelected('Poing')}
                             style={styles.leftItemText}>
                             节点
                         </Text>
@@ -66,7 +66,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <Icon name="md-star-outline" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Sitting')}
+                            onPress={() => this.props.onItemSelected('Star')}
                             style={styles.leftItemText}>
                             收藏
                         </Text>
@@ -74,7 +74,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <FontAwesome name="bell-o" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Sitting')}
+                            onPress={() => this.props.onItemSelected('Bell')}
                             style={styles.leftItemText}>
                             提醒
                         </Text>
@@ -82,7 +82,7 @@ class Menu extends Component {
                     <View style={styles.leftSliderItem}>
                         <FontAwesome name="user-o" size={20} color="#737373"/>
                         <Text
-                            onPress={() => this.props.onItemSelected('Sitting')}
+                            onPress={() => this.props.onItemSelected('User')}
                             style={styles.leftItemText}>
                             个人
                         </Text>
