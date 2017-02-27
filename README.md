@@ -27,3 +27,11 @@ Mac OS X:react-native run-ios or  xcode open project and run project
  ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app1.gif) 
  ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app2.gif) 
  ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app3.gif) 
+
+##组件应用
+####react-native-side-menu
+####react-native-swiper
+####react-native-vector-icons
+####react-redux
+####redux
+####redux-thunk
