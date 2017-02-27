@@ -6,9 +6,9 @@ import * as types from './actionTypes'
 
 export function fetchList(channel) {
     var URL;
-    if (channel == 'latest') {
+    if (channel == '最新') {
         URL = 'https://www.v2ex.com/api/topics/latest.json';
-    } else if (channel == 'hot') {
+    } else if (channel == '最热') {
         URL = 'https://www.v2ex.com/api/topics/hot.json';
     } else {
         URL = 'https://www.v2ex.com/api/nodes/show.json?name='

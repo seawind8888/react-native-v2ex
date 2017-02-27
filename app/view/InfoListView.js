@@ -170,17 +170,17 @@ class InfoListView extends Component {
                             </Animated.View>
                             {ListInfo.isLoading ? <View></View> :
                             <View style={styles.rightSliderContainer}>
-                                <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition('latest') }}>
+                                <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition('最新') }}>
                                     <View style={styles.rightSliderOptionsContainer}>
                                         <Text style={
-                                            ListInfo.channel=='latest'?
+                                            ListInfo.channel=='最新'?
                                                 styles.rightSliderOptionsOn:styles.rightSliderOptions}>最新</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-                                <TouchableWithoutFeedback onPress={()=>{  this.fetchInfoTransition('hot')}}>
+                                <TouchableWithoutFeedback onPress={()=>{  this.fetchInfoTransition('最热')}}>
                                     <View style={styles.rightSliderOptionsContainer}>
                                         <Text style={
-                                            ListInfo.channel=='hot'?
+                                            ListInfo.channel=='最热'?
                                                 styles.rightSliderOptionsOn:styles.rightSliderOptions}>最热</Text>
                                     </View>
                                 </TouchableWithoutFeedback>

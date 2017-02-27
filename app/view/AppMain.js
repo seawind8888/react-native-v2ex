@@ -43,7 +43,7 @@ class AppMain extends Component {
 
     componentWillMount() {
         const {dispatch} = this.props;
-        dispatch(fetchList('latest'));
+        dispatch(fetchList('最新'));
     }
 
     toggleLeft() {
@@ -111,7 +111,7 @@ class AppMain extends Component {
 
 
     render() {
-
+        const {ListInfo} = this.props;
         const menu = <Menu onItemSelected={this.onMenuItemSelected}/>;
         return (
             <View style={{flex: 1}}>
@@ -140,7 +140,7 @@ class AppMain extends Component {
                             <Image source={require('../imgs/slideButton.png')} style={styles.slideButtonImg}/>
                         </TouchableOpacity>
                         <View style={styles.titleContainer}>
-                            <Text style={styles.tabTitle}>技术</Text>
+                            <Text style={styles.tabTitle}>{ListInfo.channel}</Text>
                         </View>
                         <TouchableOpacity style={styles.slideButton} onPress={() => this.toggleRight()}>
                             <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
@@ -189,10 +189,9 @@ const styles = StyleSheet.create({
 });
 
 export default connect((state) => {
-    const {ListInfo,RightSlider} = state;
+    const {ListInfo} = state;
     return {
-        ListInfo,
-        RightSlider
+        ListInfo
     }
 })(AppMain);
 

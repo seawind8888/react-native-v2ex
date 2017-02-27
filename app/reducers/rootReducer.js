@@ -3,11 +3,9 @@
  */
 import { combineReducers } from 'redux';
 import ListInfo from './listInfoReducer';
-import RightSlider from './rightSliderReducer'
 
 const rootReducer = combineReducers({
-    ListInfo,
-    RightSlider
+    ListInfo
 });
 
 export default rootReducer
