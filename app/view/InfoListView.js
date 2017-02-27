@@ -39,8 +39,13 @@ class InfoListView extends Component {
             selectedItem: 'Collection',
             digAnim: new Animated.Value(0),
             rightIsOpen: rightIsOpen,
-            changeOpen: React.PropTypes.func.isRequired
+            changeOpen: React.PropTypes.func.isRequired,
+            listViewHide:true
         }
+    }
+
+    componentWillMount() {
+
     }
 
     componentDidMount() {
@@ -92,8 +97,8 @@ class InfoListView extends Component {
             },
         ).start();
         setTimeout(()=>{
-            this.onScrollDown(channel);
-        },200)
+            dispatch(fetchList(channel))
+        },300)
     }
 
 
@@ -153,7 +158,7 @@ class InfoListView extends Component {
                             title="正在加载中……"
                             color="#ccc"/>
                     }>
-                    {ListInfo.isLoading ? <View></View> :
+
                         <View style={{flex: 1, position: 'relative'}}>
                             <Animated.View
                                 style={{
@@ -163,6 +168,7 @@ class InfoListView extends Component {
                                 }}>
                                 {this.renderContent(this.state.dataSource.cloneWithRows(ListInfo.data))}
                             </Animated.View>
+                            {ListInfo.isLoading ? <View></View> :
                             <View style={styles.rightSliderContainer}>
                                 <TouchableWithoutFeedback onPress={()=> { this.fetchInfoTransition('latest') }}>
                                     <View style={styles.rightSliderOptionsContainer}>
@@ -178,11 +184,11 @@ class InfoListView extends Component {
                                                 styles.rightSliderOptionsOn:styles.rightSliderOptions}>最热</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-                            </View>
-                        </View>
-                    }
-                </ScrollView>
 
+                            </View>
+                            }
+                        </View>
+                </ScrollView>
             </View>
         );
     }
