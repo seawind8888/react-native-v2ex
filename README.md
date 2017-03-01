@@ -5,7 +5,7 @@
 
 ###1.第一步
 ```
-git clone https://github.com/seawind8888/v2ex_demo.git
+git clone https://github.com/seawind8888/react-native-v2ex.git
 ```
 ###2.第二步
 ```
