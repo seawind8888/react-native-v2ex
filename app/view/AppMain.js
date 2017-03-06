@@ -97,6 +97,7 @@ class AppMain extends Component {
     };
 
     onMenuItemSelected = (item) => {
+        const {dispatch} = this.props;
         this.setState({
             isOpen: false,
             selectedItem: item,
@@ -104,7 +105,7 @@ class AppMain extends Component {
         if(item == this.state.selectedItem){
             return
         }else{
-            alert('开发中')
+            dispatch(fetchList('最新'));
         }
     };
 
@@ -146,7 +147,7 @@ class AppMain extends Component {
                             <Image source={require('../imgs/moebutton.png')} style={styles.slideButtonImg}/>
                         </TouchableOpacity>
                     </View>
-                    <InfoListView changeOpen={ this.changeRightSlider} rightIsOpen={this.state.rightIsOpen} {...this.props}/>
+                    <InfoListView changeOpen={this.changeRightSlider} rightIsOpen={this.state.rightIsOpen} {...this.props}/>
                 </SideMenu>
             </View>
         )

@@ -160,6 +160,12 @@ class InfoListView extends Component {
                     }>
 
                         <View style={{flex: 1, position: 'relative'}}>
+                            {this.state.rightIsOpen?<View></View>:
+                            <View style={styles.rightSliderBlock}>
+                                 <TouchableWithoutFeedback onPress={()=> this.props.changeOpen()}>
+                                     <View style={{flex:1}}></View>
+                                 </TouchableWithoutFeedback>
+                            </View>}
                             <Animated.View
                                 style={{
                                     position:'relative',
@@ -184,7 +190,6 @@ class InfoListView extends Component {
                                                 styles.rightSliderOptionsOn:styles.rightSliderOptions}>最热</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-
                             </View>
                             }
                         </View>
@@ -270,6 +275,12 @@ const styles = StyleSheet.create({
     rightSliderOptionsOn:{
         color:'#55b8ec',
         fontSize:18
+    },
+    rightSliderBlock: {
+        position:'absolute',
+        width:width-130,
+        height:height,
+        zIndex:110
     }
 });
 
