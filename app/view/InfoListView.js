@@ -160,12 +160,14 @@ class InfoListView extends Component {
                     }>
 
                         <View style={{flex: 1, position: 'relative'}}>
-                            {this.state.rightIsOpen?<View></View>:
+                            {this.state.rightIsOpen?
                             <View style={styles.rightSliderBlock}>
                                  <TouchableWithoutFeedback onPress={()=> this.props.changeOpen()}>
                                      <View style={{flex:1}}></View>
                                  </TouchableWithoutFeedback>
-                            </View>}
+                            </View>
+                            :
+                            <View></View>}
                             <Animated.View
                                 style={{
                                     position:'relative',

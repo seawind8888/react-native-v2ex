@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import rootApp from 'app/root'
+import root from './app/root'
 
 
-AppRegistry.registerComponent('v2ex_demo', () => rootApp);
+AppRegistry.registerComponent('v2ex_demo', () => root);

@@ -6,7 +6,7 @@ import {
     AppRegistry,
     StyleSheet,
     Navigator,
-    View
+    View 
 } from 'react-native';
 import AppMain from './AppMain'
 

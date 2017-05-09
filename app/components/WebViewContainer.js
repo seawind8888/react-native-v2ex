@@ -10,12 +10,16 @@ import {
     Dimensions,
     Image,
     WebView,
+    Platform,
     TouchableWithoutFeedback
 } from 'react-native';
 
 import Util from '../common/utils';
 
 let {height, width} = Dimensions.get('window');
+
+const headerHeight = (Platform.OS === 'ios' ? 65 : 55)
+const headerPaddingTop = (Platform.OS === 'ios' ? 35 : 20)
 
 class WebViewContainer extends Component {
     constructor(props) {
@@ -60,8 +64,8 @@ class WebViewContainer extends Component {
 const styles = StyleSheet.create({
     listHeader: {
         width: width,
-        height: 65,
-        paddingTop: 35,
+        height: headerHeight,
+        paddingTop: headerPaddingTop,
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: '#ffffff',

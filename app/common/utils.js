@@ -2,10 +2,9 @@
  * Created by haifeng on 17/2/22.
  */
 let Util = {
-    fetchData: (url, method, body, successCallback, failCallback) => {
+    fetchData: (url, method, successCallback, failCallback) => {
         fetch(url, {
-            method: method,
-            body: body,
+            method: method
         })
             .then((response) => response.json())
             .then((responseJSON) => {
